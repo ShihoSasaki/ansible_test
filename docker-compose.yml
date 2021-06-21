@@ -49,10 +49,23 @@ services:
     networks:
       network1:
         ipv4_address: 10.0.0.2
+        
+   web:
+      networks:
+        - network1
+        - network2
+        - network3
 
 networks:
-  network1:
-    ipam:
-      driver: default
-      config:
+   network1:
+     driver: bridge
+     config:
         - subnet: 10.0.0.0/24
+   network2:
+     driver: bridge
+     config:
+        - subnet: 172.31.1.0/24
+   network3:
+     driver: bridge
+     config:
+        - subnet: 172.31.2.0/24
