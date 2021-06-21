@@ -51,37 +51,20 @@ services:
         ipv4_address: 10.0.0.2
 
 networks:
-  default:
-    external:
-      name: bridge
-  container-link:
-    name: network1
-    driver: bridge
+  network1:
     ipam:
       driver: default
       config:
-        - subnet: "10.0.0.0/24"
-
-networks:
-  default:
-    external:
-      name: bridge
-  container-link:
-    name: network2
-    driver: bridge
+        - subnet: 10.0.0.0/24
+        
+  network2:
     ipam:
       driver: default
       config:
-        - subnet: "172.31.1.0/24"
-  
-networks:
-  default:
-    external:
-      name: bridge
-  container-link:
-    name: network2
-    driver: bridge
+        - subnet: 172.31.1.0/24
+        
+  network3:
     ipam:
       driver: default
       config:
-        - subnet: "172.31.2.0/24"
+        - subnet: 172.31.2.0/24
