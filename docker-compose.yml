@@ -1,25 +1,33 @@
 version: '3'
 services:
   vyos01:
-    image: higebu/vyos:latest
+    image: 2stacks/vyos:latest
     command: /sbin/init
     volumes:
     - /lib/modules:/lib/modules
     privileged: true
     networks:
-      network1:
+      mgmt_nw:
         ipv4_address: 10.0.0.3
-        
+      client_nw:
+        ipv4_address: 172.31.1.254
+      server_nw:
+        ipv4_address: 172.31.2.254
+
   vyos02:
-    image: higebu/vyos:latest
+    image: 2stacks/vyos:latest
     command: /sbin/init
     volumes:
     - /lib/modules:/lib/modules
     privileged: true
     networks:
-      network1:
+      mgmt_nw:
         ipv4_address: 10.0.0.4
-
+      client_nw:
+        ipv4_address: 172.31.1.253
+      server_nw:
+        ipv4_address: 172.31.2.253
+      
   Server:
     build:
       context: .
@@ -27,8 +35,10 @@ services:
     volumes:
     - ./ansible_practice:/ansible_practice
     networks:
-      network1:
+      mgmt_nw:
         ipv4_address: 10.0.0.5
+      server_nw:
+        ipv4_address: 172.31.2.2
         
   Client:
     build:
@@ -37,8 +47,10 @@ services:
     volumes:
     - ./ansible_practice:/ansible_practice
     networks:
-      network1:
+      mgmt_nw:
         ipv4_address: 10.0.0.6
+      client_nw:
+        ipv4_address: 172.31.1.2
         
   ansible:
     build:
@@ -47,25 +59,24 @@ services:
     volumes:
     - ./ansible_practice:/ansible_practice
     networks:
-      network1:
+      mgmt_nw:
         ipv4_address: 10.0.0.2
-        
-   web:
-      networks:
-        - network1
-        - network2
-        - network3
 
 networks:
-   network1:
-     driver: bridge
-     config:
+  mgmt_nw:
+    ipam:
+      driver: default
+      config:
         - subnet: 10.0.0.0/24
-   network2:
-     driver: bridge
-     config:
+  
+  client_nw:
+    ipam:
+      driver: default
+      config:
         - subnet: 172.31.1.0/24
-   network3:
-     driver: bridge
-     config:
+
+  server_nw:
+    ipam:
+      driver: default
+      config:
         - subnet: 172.31.2.0/24
