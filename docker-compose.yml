@@ -7,7 +7,7 @@ services:
     - /lib/modules:/lib/modules
     privileged: true
     networks:
-      network_automation:
+      network1:
         ipv4_address: 10.0.0.3
         
   vyos02:
@@ -17,7 +17,7 @@ services:
     - /lib/modules:/lib/modules
     privileged: true
     networks:
-      network_automation:
+      network1:
         ipv4_address: 10.0.0.4
 
   Server:
@@ -27,7 +27,7 @@ services:
     volumes:
     - ./ansible_practice:/ansible_practice
     networks:
-      network_automation:
+      network1:
         ipv4_address: 10.0.0.5
         
   Client:
@@ -37,7 +37,7 @@ services:
     volumes:
     - ./ansible_practice:/ansible_practice
     networks:
-      network_automation:
+      network1:
         ipv4_address: 10.0.0.6
         
   ansible:
@@ -47,7 +47,7 @@ services:
     volumes:
     - ./ansible_practice:/ansible_practice
     networks:
-      network_automation:
+      network1:
         ipv4_address: 10.0.0.2
 
 networks:
