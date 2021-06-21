@@ -9,7 +9,37 @@ services:
     networks:
       network_automation:
         ipv4_address: 10.0.0.3
+        
+  vyos02:
+    image: higebu/vyos:latest
+    command: /sbin/init
+    volumes:
+    - /lib/modules:/lib/modules
+    privileged: true
+    networks:
+      network_automation:
+        ipv4_address: 10.0.0.4
 
+  Server:
+    build:
+      context: .
+    image: centos:centos7
+    volumes:
+    - ./ansible_practice:/ansible_practice
+    networks:
+      network_automation:
+        ipv4_address: 10.0.0.5
+        
+  Client:
+    build:
+      context: .
+    image: centos:centos7
+    volumes:
+    - ./ansible_practice:/ansible_practice
+    networks:
+      network_automation:
+        ipv4_address: 10.0.0.6
+        
   ansible:
     build:
       context: .
@@ -21,8 +51,20 @@ services:
         ipv4_address: 10.0.0.2
 
 networks:
-  network_automation:
+  network1:
     ipam:
       driver: default
       config:
         - subnet: 10.0.0.0/24
+        
+  network2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.31.1.0/24
+        
+  network3:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.31.2.0/24
